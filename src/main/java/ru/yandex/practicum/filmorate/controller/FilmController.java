@@ -23,30 +23,35 @@ public class FilmController {
 
     @PostMapping(value = "/film")
     public Film createFilm(@RequestBody Film film) throws ValidationException {
+        if (FilmValidator.checkFilm(film)) {
+            films.add(film);
+            return film;
+        } else {
+            return null;
+        }
 
-        FilmValidator.checkFilm(film);
-
-        films.add(film);
-        return film;
     }
 
     @PutMapping(value = "/film")
     public Film updateFilm(@RequestBody Film film) throws ValidationException {
+        if (FilmValidator.checkFilm(film)) {
 
-        FilmValidator.checkFilm(film);
 
-        if (!films.contains(film)) {
-            films.add(film);
-        } else {
-            for (Film film1 : films) {
-                if (film1.getId() == film.getId()) {
-                    films.remove(film1);
-                    break;
-                }
+            if (!films.contains(film)) {
                 films.add(film);
+            } else {
+                for (Film film1 : films) {
+                    if (film1.getId() == film.getId()) {
+                        films.remove(film1);
+                        break;
+                    }
+                    films.add(film);
+                }
             }
+            return film;
+        } else {
+            return null;
         }
-        return film;
 
     }
 

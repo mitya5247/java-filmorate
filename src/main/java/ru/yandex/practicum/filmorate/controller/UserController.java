@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validator.UserValidator;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,14 +22,14 @@ public class UserController {
     }
 
     @PostMapping(value = "/user")
-    public User createUser(@RequestBody User user) throws ValidationException {
+    public User createUser(@Valid @RequestBody User user) throws ValidationException {
         UserValidator.checkUser(user);
         users.add(user);
         return user;
     }
 
     @PutMapping(value = "/user")
-    public void updateUser(@RequestBody User user) throws ValidationException {
+    public void updateUser(@Valid @RequestBody User user) throws ValidationException {
         UserValidator.checkUser(user);
         for (User user1 : users) {
             if (user1.getId() == user.getId()) {

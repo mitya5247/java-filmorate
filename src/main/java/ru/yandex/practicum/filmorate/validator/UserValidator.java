@@ -9,9 +9,9 @@ import java.time.LocalDate;
 @Slf4j
 public class UserValidator {
     public static boolean checkUser(User user) throws ValidationException {
-        if (!validEmail(user.getEmail()) || !validLogin(user.getLogin()) || validDateBirthday(user.getBirthday())) {
+        if (!validEmail(user.getEmail()) || !validLogin(user.getLogin()) || !validDateBirthday(user.getBirthday())) {
             throw new ValidationException("Ошибка валидации пользователя. " +
-                    "Проверьте поля.");
+                    "Проверьте валидность полей.");
         }
         return true;
     }
