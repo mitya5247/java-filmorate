@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class ValidationFilmTests {
 
     @Test
-    public void createEmptyFilm() {
+    public void createEmptyFilm() throws ValidationException {
         Film film = Film.builder()
                 .build();
         Assertions.assertThrows(ValidationException.class, () -> FilmValidator.checkFilm(film));

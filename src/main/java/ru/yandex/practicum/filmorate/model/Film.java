@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 /**
@@ -13,10 +14,14 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class Film {
+    @PositiveOrZero
     int id;
+    @NotBlank
     String name;
+    @Max(200)
     String description;
     LocalDate releaseDate;
+    @PositiveOrZero
     int duration;
 
 }

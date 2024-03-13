@@ -1,9 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validator.UserValidator;
 
@@ -15,29 +13,38 @@ import java.util.List;
 @RequestMapping(value = "/users")
 public class UserController {
     ArrayList<User> users = new ArrayList<>();
+    int id = 1;
 
     @GetMapping
     public List<User> getUsers() {
         return users;
     }
 
-    @PostMapping(value = "/user")
+    @PostMapping
     public User createUser(@Valid @RequestBody User user) throws ValidationException {
-        UserValidator.checkUser(user);
-        users.add(user);
-        return user;
+        if (UserValidator.checkUser(user)) {
+            user.setId(id++);
+            users.add(user);
+            return user;
+        } else {
+            throw new ValidationException("Проверьте поля валидации");
+        }
     }
 
-    @PutMapping(value = "/user")
-    public void updateUser(@Valid @RequestBody User user) throws ValidationException {
-        UserValidator.checkUser(user);
-        for (User user1 : users) {
-            if (user1.getId() == user.getId()) {
-                users.remove(user1);
-                break;
+    @PutMapping
+    public User updateUser(@Valid @RequestBody User user) throws ValidationException {
+        if (UserValidator.checkUser(user)) {
+            for (User user1 : users) {
+                if (user1.getId() == user.getId()) {
+                    users.remove(user1);
+                    users.add(user);
+                    return user;
+                }
             }
+            throw new ValidationException("Пользователя с указанным id не существует");
+        } else {
+            throw new ValidationException("Проверьте поля валидации");
         }
-        users.add(user);
     }
 
 
