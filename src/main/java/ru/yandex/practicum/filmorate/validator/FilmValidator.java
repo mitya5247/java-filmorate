@@ -9,8 +9,8 @@ import java.time.LocalDate;
 @Slf4j
 public class FilmValidator {
 
-    private final static LocalDate maxDateRelease = LocalDate.of(1895, 12, 28);
-    private final static int descriptionLength = 200;
+    private static final LocalDate maxDateRelease = LocalDate.of(1895, 12, 28);
+    private static final  int descriptionLength = 200;
 
     public static boolean checkFilm(Film film) throws ValidationException {
         try {
