@@ -33,6 +33,7 @@ public class UserValidator {
     private static boolean validDateBirthday(LocalDate date) {
         return date.isBefore(LocalDate.now());
     }
+
     private static void makeNameuserNotEmpty(User user) {
         if (user.getName() == null) {
             user.setName(user.getLogin());
