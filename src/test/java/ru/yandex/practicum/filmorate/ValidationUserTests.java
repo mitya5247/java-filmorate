@@ -19,11 +19,12 @@ public class ValidationUserTests {
 
     @BeforeEach
     public void createValidatorCheck() {
-        try(ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
+        try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
             validator = validatorFactory.getValidator();
         }
 
     }
+
     @Test
     public void createValidUser() throws ValidationException {
         User user = User.builder()
@@ -107,6 +108,7 @@ public class ValidationUserTests {
                 .build();
         Assertions.assertFalse(UserValidator.checkUser(user));
     }
+
     @Test
     public void checkAnnotationValidationWithoutViolations() {
         User user = User.builder()
@@ -119,6 +121,7 @@ public class ValidationUserTests {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         Assertions.assertTrue(violations.isEmpty());
     }
+
     @Test
     public void checkAnnotationValidationWithViolationEmail() {
         User user = User.builder()
@@ -131,6 +134,7 @@ public class ValidationUserTests {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         Assertions.assertFalse(violations.isEmpty());
     }
+
     @Test
     public void checkAnnotationValidationWithViolationBirthday() {
         User user = User.builder()
@@ -143,6 +147,7 @@ public class ValidationUserTests {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         Assertions.assertFalse(violations.isEmpty());
     }
+
     @Test
     public void checkAnnotationValidationWithViolationLogin() {
         User user = User.builder()

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class FilmValidator {
 
     private static final LocalDate maxDateRelease = LocalDate.of(1895, 12, 28);
-    private static final  int descriptionLength = 200;
+    private static final int descriptionLength = 200;
 
     public static boolean checkFilm(Film film) throws ValidationException {
         try {

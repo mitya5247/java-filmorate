@@ -21,5 +21,4 @@ public class User {
     final LocalDate birthday;
 
 
-
 }

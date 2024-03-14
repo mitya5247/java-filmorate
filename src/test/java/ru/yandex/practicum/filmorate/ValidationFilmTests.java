@@ -20,7 +20,7 @@ public class ValidationFilmTests {
 
     @BeforeEach
     public void createValidatorCheck() {
-        try(ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
+        try (ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
             validator = validatorFactory.getValidator();
         }
 
@@ -32,6 +32,7 @@ public class ValidationFilmTests {
                 .build();
         Assertions.assertThrows(ValidationException.class, () -> FilmValidator.checkFilm(film));
     }
+
     @Test
     public void createEmptyName() throws ValidationException {
         Film film = Film.builder()
@@ -42,6 +43,7 @@ public class ValidationFilmTests {
         Assertions.assertFalse(FilmValidator.checkFilm(film));
 
     }
+
     @Test
     public void createDescriptionLengthMoreThan200() throws ValidationException {
         Film film = Film.builder()
@@ -55,6 +57,7 @@ public class ValidationFilmTests {
         Assertions.assertFalse(FilmValidator.checkFilm(film));
         Assertions.assertTrue(film.getDescription().length() > 200);
     }
+
     @Test
     public void createDescriptionLengthLessThan200() throws ValidationException {
         Film film = Film.builder()
@@ -69,6 +72,7 @@ public class ValidationFilmTests {
         Assertions.assertTrue(FilmValidator.checkFilm(film));
         Assertions.assertFalse(film.getDescription().length() > 200);
     }
+
     @Test
     public void createDescriptionLength200() throws ValidationException {
         Film film = Film.builder()
@@ -83,6 +87,7 @@ public class ValidationFilmTests {
         Assertions.assertTrue(FilmValidator.checkFilm(film));
         Assertions.assertEquals(200, film.getDescription().length());
     }
+
     @Test
     public void createFilmEarlierThanItsPossible() throws ValidationException {
         Film film = Film.builder()
@@ -95,6 +100,7 @@ public class ValidationFilmTests {
         Assertions.assertFalse(FilmValidator.checkFilm(film));
 
     }
+
     @Test
     public void createFilmLaterThanItsPossible() throws ValidationException {
         Film film = Film.builder()
@@ -107,6 +113,7 @@ public class ValidationFilmTests {
         Assertions.assertTrue(FilmValidator.checkFilm(film));
 
     }
+
     @Test
     public void createFilmPreciselyThanItsPossible() throws ValidationException {
         Film film = Film.builder()
@@ -119,6 +126,7 @@ public class ValidationFilmTests {
         Assertions.assertTrue(FilmValidator.checkFilm(film));
 
     }
+
     @Test
     public void createNegativeDurationOfFilm() throws ValidationException {
         Film film = Film.builder()
@@ -131,6 +139,7 @@ public class ValidationFilmTests {
         Assertions.assertFalse(FilmValidator.checkFilm(film));
 
     }
+
     @Test
     public void createZeroDurationOfFilm() throws ValidationException {
         Film film = Film.builder()
@@ -143,6 +152,7 @@ public class ValidationFilmTests {
         Assertions.assertTrue(FilmValidator.checkFilm(film));
 
     }
+
     @Test
     public void createPositiveDurationOfFilm() throws ValidationException {
         Film film = Film.builder()
@@ -169,6 +179,7 @@ public class ValidationFilmTests {
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         Assertions.assertTrue(violations.isEmpty());
     }
+
     @Test
     public void checkAnnotationValidationWithViolationDescription() {
         Film film = Film.builder()
@@ -183,6 +194,7 @@ public class ValidationFilmTests {
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         Assertions.assertFalse(violations.isEmpty());
     }
+
     @Test
     public void checkAnnotationValidationWithViolationDuration() {
         Film film = Film.builder()
