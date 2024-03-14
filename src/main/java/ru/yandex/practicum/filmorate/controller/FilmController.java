@@ -1,19 +1,15 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(value = "/films")

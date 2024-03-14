@@ -1,14 +1,30 @@
 package ru.yandex.practicum.filmorate;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
+import java.util.Set;
 
 public class ValidationFilmTests {
+
+    private static Validator validator;
+
+    @BeforeEach
+    public void createValidatorCheck() {
+        try(ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory()) {
+            validator = validatorFactory.getValidator();
+        }
+
+    }
 
     @Test
     public void createEmptyFilm() throws ValidationException {
@@ -138,5 +154,45 @@ public class ValidationFilmTests {
                 .build();
         Assertions.assertTrue(FilmValidator.checkFilm(film));
 
+    }
+
+    @Test
+    public void checkAnnotationValidationWithoutViolations() {
+        Film film = Film.builder()
+                .id(1)
+                .name("The most easrlier film")
+                .description("Grt")
+                .duration(10)
+                .releaseDate(LocalDate.of(1994, 12, 23))
+                .build();
+        System.out.println(film.getDescription().length());
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        Assertions.assertTrue(violations.isEmpty());
+    }
+    @Test
+    public void checkAnnotationValidationWithViolationDescription() {
+        Film film = Film.builder()
+                .id(1)
+                .name("The most easrlier film")
+                .description("Great short description!fdisojgdoikopaslko0shko0ko0kho0ko0kgo0hk0ofko0khogpdslzzfkokfoi\" +\n" +
+                        "  \"sjdkfgoiskdoifgfksdoifkmsdogimksdoifmgodkf,kgohdmiogfkasfieorkfeoewieafkoiwekfoikmkf\" +\n" +
+                        "glfdasfowakfopakwrghjkljhgfdg")
+                .duration(10)
+                .releaseDate(LocalDate.of(1994, 12, 23))
+                .build();
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        Assertions.assertFalse(violations.isEmpty());
+    }
+    @Test
+    public void checkAnnotationValidationWithViolationDuration() {
+        Film film = Film.builder()
+                .id(1)
+                .name("The most easrlier film")
+                .description("Great short description!")
+                .duration(-10)
+                .releaseDate(LocalDate.of(1994, 12, 23))
+                .build();
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        Assertions.assertFalse(violations.isEmpty());
     }
 }

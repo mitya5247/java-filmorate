@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -17,11 +18,11 @@ public class Film {
     @PositiveOrZero
     int id;
     @NotBlank
-    String name;
-    @Max(200)
-    String description;
-    LocalDate releaseDate;
+    final String name;
+    @Length(max = 200)
+    final String description;
+    final LocalDate releaseDate;
     @PositiveOrZero
-    int duration;
+    final int duration;
 
 }

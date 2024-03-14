@@ -13,12 +13,12 @@ public class User {
     int id;
     @Email
     @NotBlank
-    String email;
+    final String email;
     @NotBlank
-    String login;
+    final String login;
     String name;
     @PastOrPresent
-    LocalDate birthday;
+    final LocalDate birthday;
 
 
 
