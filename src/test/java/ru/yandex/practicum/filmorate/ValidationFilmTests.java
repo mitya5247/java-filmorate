@@ -27,25 +27,25 @@ public class ValidationFilmTests {
     }
 
     @Test
-    public void createEmptyFilm() throws ValidationException {
+    public void createEmptyFilm() {
         Film film = Film.builder()
                 .build();
         Assertions.assertThrows(ValidationException.class, () -> FilmValidator.checkFilm(film));
     }
 
     @Test
-    public void createEmptyName() throws ValidationException {
+    public void createEmptyName() {
         Film film = Film.builder()
                 .id(1)
                 .name("")
                 .description("Great empty name film!")
                 .build();
-        Assertions.assertFalse(FilmValidator.checkFilm(film));
+        Assertions.assertThrows(ValidationException.class, () -> FilmValidator.checkFilm(film));
 
     }
 
     @Test
-    public void createDescriptionLengthMoreThan200() throws ValidationException {
+    public void createDescriptionLengthMoreThan200() {
         Film film = Film.builder()
                 .id(1)
                 .name("The best description I have ever had!")
@@ -54,7 +54,7 @@ public class ValidationFilmTests {
                         "glfdasfowakfopakwrigjse9fosdptgjiaerjgi9aerjfise9jtsgmiaerjgiawjrk0ig9aekrig9a0erkfiaejgkege" +
                         "erigjiae9rjgi9srkgro0ieajrgiaewkrgiserig9jea09rjgkaei9rjgi9erjg9erjg0aejrg9isrjtgi0awejkg9isertgi")
                 .build();
-        Assertions.assertFalse(FilmValidator.checkFilm(film));
+        Assertions.assertThrows(ValidationException.class, () -> FilmValidator.checkFilm(film));
         Assertions.assertTrue(film.getDescription().length() > 200);
     }
 
@@ -89,7 +89,7 @@ public class ValidationFilmTests {
     }
 
     @Test
-    public void createFilmEarlierThanItsPossible() throws ValidationException {
+    public void createFilmEarlierThanItsPossible() {
         Film film = Film.builder()
                 .id(1)
                 .name("The most easrlier film")
@@ -97,7 +97,7 @@ public class ValidationFilmTests {
                 .duration(234)
                 .releaseDate(LocalDate.of(1894, 12, 23))
                 .build();
-        Assertions.assertFalse(FilmValidator.checkFilm(film));
+        Assertions.assertThrows(ValidationException.class, () -> FilmValidator.checkFilm(film));
 
     }
 
@@ -128,7 +128,7 @@ public class ValidationFilmTests {
     }
 
     @Test
-    public void createNegativeDurationOfFilm() throws ValidationException {
+    public void createNegativeDurationOfFilm() {
         Film film = Film.builder()
                 .id(1)
                 .name("The most easrlier film")
@@ -136,7 +136,7 @@ public class ValidationFilmTests {
                 .duration(-234)
                 .releaseDate(LocalDate.of(1994, 12, 23))
                 .build();
-        Assertions.assertFalse(FilmValidator.checkFilm(film));
+        Assertions.assertThrows(ValidationException.class, () -> FilmValidator.checkFilm(film));
 
     }
 

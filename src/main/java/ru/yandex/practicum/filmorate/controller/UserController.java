@@ -22,29 +22,25 @@ public class UserController {
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) throws ValidationException {
-        if (UserValidator.checkUser(user)) {
-            user.setId(id++);
-            users.add(user);
-            return user;
-        } else {
-            throw new ValidationException("Проверьте поля валидации");
-        }
+        UserValidator.checkUser(user);
+        user.setId(id++);
+        users.add(user);
+        return user;
+
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) throws ValidationException {
-        if (UserValidator.checkUser(user)) {
-            for (User user1 : users) {
-                if (user1.getId() == user.getId()) {
-                    users.remove(user1);
-                    users.add(user);
-                    return user;
-                }
+        UserValidator.checkUser(user);
+        for (User user1 : users) {
+            if (user1.getId() == user.getId()) {
+                users.remove(user1);
+                users.add(user);
+                return user;
             }
-            throw new ValidationException("Пользователя с указанным id не существует");
-        } else {
-            throw new ValidationException("Проверьте поля валидации");
         }
+        throw new ValidationException("Пользователя с указанным id не существует");
+
     }
 
 

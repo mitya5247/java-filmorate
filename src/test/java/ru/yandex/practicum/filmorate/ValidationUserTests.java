@@ -46,7 +46,7 @@ public class ValidationUserTests {
                 .birthday(LocalDate.of(1995, 3, 24))
                 .login("login")
                 .build();
-        Assertions.assertFalse(UserValidator.checkUser(user));
+        Assertions.assertThrows(ValidationException.class, () -> UserValidator.checkUser(user));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ValidationUserTests {
                 .birthday(LocalDate.of(1995, 3, 24))
                 .login("login")
                 .build();
-        Assertions.assertFalse(UserValidator.checkUser(user));
+        Assertions.assertThrows(ValidationException.class, () -> UserValidator.checkUser(user));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ValidationUserTests {
                 .birthday(LocalDate.of(1995, 3, 24))
                 .login("")
                 .build();
-        Assertions.assertFalse(UserValidator.checkUser(user));
+        Assertions.assertThrows(ValidationException.class, () -> UserValidator.checkUser(user));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ValidationUserTests {
                 .birthday(LocalDate.of(1995, 3, 24))
                 .login("loginWithBlank ")
                 .build();
-        Assertions.assertFalse(UserValidator.checkUser(user));
+        Assertions.assertThrows(ValidationException.class, () -> UserValidator.checkUser(user));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ValidationUserTests {
                 .birthday(LocalDate.of(2095, 3, 24))
                 .login("loginWithoutBlank")
                 .build();
-        Assertions.assertFalse(UserValidator.checkUser(user));
+        Assertions.assertThrows(ValidationException.class, () -> UserValidator.checkUser(user));
     }
 
     @Test

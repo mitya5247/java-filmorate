@@ -24,36 +24,30 @@ public class FilmController {
 
     @PostMapping
     public Film createFilm(@RequestBody Film film) throws ValidationException {
-        if (FilmValidator.checkFilm(film)) {
-            film.setId(id++);
-            films.add(film);
-            return film;
-        } else {
-            throw new ValidationException("Проверьте поля валидации");
-        }
+        FilmValidator.checkFilm(film);
+        film.setId(id++);
+        films.add(film);
+        return film;
+
 
     }
 
     @PutMapping
     public Film updateFilm(@NotNull @NotBlank @RequestBody Film film) throws ValidationException {
-        if (FilmValidator.checkFilm(film)) {
-            if (film.getId() == 0) {
-                throw new ValidationException("Задан нулевой id");
-            } else {
-                for (Film film1 : films) {
-                    if (film1.getId() == film.getId()) {
-                        films.remove(film1);
-                        films.add(film);
-                        return film;
-                    }
-
-                }
-            }
-            throw new ValidationException("Фильм не добавлен");
+        FilmValidator.checkFilm(film);
+        if (film.getId() == 0) {
+            throw new ValidationException("Задан нулевой id");
         } else {
-            throw new ValidationException("Проверьте поля валидации");
-        }
+            for (Film film1 : films) {
+                if (film1.getId() == film.getId()) {
+                    films.remove(film1);
+                    films.add(film);
+                    return film;
+                }
 
+            }
+        }
+        throw new ValidationException("Фильм с id " + film.getId() + " не добавлен, так как его нет в списке.");
     }
 
 

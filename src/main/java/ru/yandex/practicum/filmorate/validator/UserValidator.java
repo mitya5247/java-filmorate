@@ -10,9 +10,18 @@ import java.time.LocalDate;
 public class UserValidator {
     public static boolean checkUser(User user) throws ValidationException {
         try {
-            makeNameuserNotEmpty(user);
-            if (!validEmail(user.getEmail()) || !validLogin(user.getLogin()) || !validDateBirthday(user.getBirthday())) {
-                return false;
+            makeNameUserNotEmpty(user);
+      //      if (!validEmail(user.getEmail()) || !validLogin(user.getLogin()) || !validDateBirthday(user.getBirthday())) {
+          //      return false;
+                //   }
+            if (!validEmail(user.getEmail())) {
+                throw new ValidationException("Введен невалидный email: " + user.getEmail());
+            }
+            if (!validLogin(user.getLogin())) {
+                throw new ValidationException("Введен невалидный логин: " + user.getLogin());
+            }
+            if (!validDateBirthday(user.getBirthday())) {
+                throw new ValidationException("Дата рождения не может быть в будущем " + user.getBirthday());
             }
             return true;
         } catch (NullPointerException e) {
@@ -34,7 +43,7 @@ public class UserValidator {
         return date.isBefore(LocalDate.now());
     }
 
-    private static void makeNameuserNotEmpty(User user) {
+    private static void makeNameUserNotEmpty(User user) {
         if (user.getName() == null) {
             user.setName(user.getLogin());
         } else {
