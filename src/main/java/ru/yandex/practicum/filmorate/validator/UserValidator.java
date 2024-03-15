@@ -11,9 +11,6 @@ public class UserValidator {
     public static boolean checkUser(User user) throws ValidationException {
         try {
             makeNameUserNotEmpty(user);
-      //      if (!validEmail(user.getEmail()) || !validLogin(user.getLogin()) || !validDateBirthday(user.getBirthday())) {
-          //      return false;
-                //   }
             if (!validEmail(user.getEmail())) {
                 throw new ValidationException("Введен невалидный email: " + user.getEmail());
             }
@@ -21,7 +18,7 @@ public class UserValidator {
                 throw new ValidationException("Введен невалидный логин: " + user.getLogin());
             }
             if (!validDateBirthday(user.getBirthday())) {
-                throw new ValidationException("Дата рождения не может быть в будущем " + user.getBirthday());
+                throw new ValidationException("Дата рождения не может быть в будущем времени " + user.getBirthday());
             }
             return true;
         } catch (NullPointerException e) {
