@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @Builder
@@ -19,6 +20,7 @@ public class User {
     String name;
     @PastOrPresent
     final LocalDate birthday;
+    Set<Integer> filmIdLiked;
 
 
 }
