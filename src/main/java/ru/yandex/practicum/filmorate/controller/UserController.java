@@ -3,6 +3,8 @@ package ru.yandex.practicum.filmorate.controller;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.validator.UserValidator;
 
 import javax.validation.Valid;
@@ -13,19 +15,45 @@ import java.util.List;
 @RequestMapping(value = "/users")
 public class UserController {
     ArrayList<User> users = new ArrayList<>();
-    int id = 1;
+    //  int id = 1;
+
+    final UserService userService;
+    final FilmService filmService;
+
+    public UserController(UserService userService, FilmService filmService) {
+        this.userService = userService;
+        this.filmService = filmService;
+    }
 
     @GetMapping
     public List<User> getUsers() {
         return users;
     }
 
+    @GetMapping(value = "/{id}")
+    public User getUser(@PathVariable Integer id) {
+        return userService.getUserStorage().getUser(id);
+    }
+
+    @GetMapping(value = "/{id}/friends") // возможно стоит изменить список логинов на список логинов
+    public List<String> getUserFriends(@PathVariable Integer id) {
+        User user = userService.getUserStorage().getUser(id);
+        return userService.getListFriends(user);
+    }
+
+    @GetMapping(value = "/{id}/friends/common/{otherId}")
+    public List<String> getCommonFriends(@PathVariable Integer id, @PathVariable Integer otherId) {
+        User user1 = userService.getUserStorage().getUser(id);
+        User user2 = userService.getUserStorage().getUser(otherId);
+        return userService.getListCommonFriends(user1, user2);
+    }
+
     @PostMapping
     public User createUser(@Valid @RequestBody User user) throws ValidationException {
         UserValidator.checkUser(user);
-        user.setId(id++);
-        users.add(user);
-        return user;
+        //    user.setId(id++);
+        //     users.add(user);
+        return userService.getUserStorage().createUser(user);
 
     }
 
@@ -41,6 +69,20 @@ public class UserController {
         }
         throw new ValidationException("Пользователя с указанным id не существует");
 
+    }
+
+    @PutMapping(value = "/{id}/friends/{friendId}")
+    public boolean addFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
+        User user = userService.getUserStorage().getUser(id);
+        User friend = userService.getUserStorage().getUser(friendId);
+        return userService.addFriend(user, friend);
+    }
+
+    @DeleteMapping(value = "/{id}/friends/{friendId}")
+    public boolean deleteFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
+        User user = userService.getUserStorage().getUser(id);
+        User friend = userService.getUserStorage().getUser(friendId);
+        return userService.removeFriend(user, friend);
     }
 
 

@@ -21,6 +21,7 @@ public class User {
     @PastOrPresent
     final LocalDate birthday;
     Set<Integer> filmIdLiked;
+    Set<String> friends;
 
 
 }
