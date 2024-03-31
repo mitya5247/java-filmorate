@@ -19,6 +19,8 @@ public class UserController {
     final UserService userService;
     final FilmService filmService;
 
+    String nullExceptionComment = "Параметр %s не может быть null";
+
     @Autowired
     public UserController(UserService userService, FilmService filmService) {
         this.userService = userService;
@@ -35,10 +37,10 @@ public class UserController {
         return userService.getUserStorage().getUser(id);
     }
 
-    @GetMapping(value = "/{id}/friends") // возможно стоит изменить список логинов на список id
+    @GetMapping(value = "/{id}/friends")
     public List<User> getUserFriends(@PathVariable Integer id) {
         if (id == null) {
-            throw new NullPointerException("должен быть задан параметр id");
+            throw new NullPointerException(String.format(nullExceptionComment, "id"));
         }
         try {
             User user = userService.getUserStorage().getUser(id);
@@ -55,10 +57,10 @@ public class UserController {
     @GetMapping(value = "/{id}/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) {
         if (id == null) {
-            throw new NullPointerException("Параметр id не должен быть null");
+            throw new NullPointerException(String.format(nullExceptionComment, "id"));
         }
         if (otherId == null) {
-            throw new NullPointerException("Параметр otherId не должен быть null");
+            throw new NullPointerException(String.format(nullExceptionComment, "otherId"));
         }
         User user1 = userService.getUserStorage().getUser(id);
         User user2 = userService.getUserStorage().getUser(otherId);
@@ -76,7 +78,7 @@ public class UserController {
         if (userService.getUserStorage().createUser(user) != null) {
             return userService.getUserStorage().getUser(user.getId());
         } else {
-            throw new ValidationException("Пользователь уже существует");
+            throw new ValidationException("Пользователь" + user.getLogin() + " уже существует");
         }
     }
 
@@ -86,17 +88,17 @@ public class UserController {
         if (userService.getUserStorage().updateUser(user) != null) {
             return userService.getUserStorage().updateUser(user);
         } else {
-            throw new NullPointerException("Данного пользователя нет в списке");
+            throw new NullPointerException("Пользователя" + user.getLogin() + " нет в списке");
         }
     }
 
     @PutMapping(value = "/{id}/friends/{friendId}")
     public List<User> addFriend(@PathVariable Long id, @PathVariable Long friendId) {
         if (id == null) {
-            throw new NullPointerException("Параметр id не может быть null");
+            throw new NullPointerException(String.format(nullExceptionComment, "id"));
         }
         if (friendId == null) {
-            throw new NullPointerException("Параметр friendId не может быть null");
+            throw new NullPointerException(String.format(nullExceptionComment, "friendId"));
         }
         try {
             User user = userService.getUserStorage().getUser(id);
@@ -112,17 +114,17 @@ public class UserController {
     @DeleteMapping(value = "/{id}/friends/{friendId}")
     public boolean deleteFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
         if (id == null) {
-            throw new NullPointerException("Параметр id не может быть null");
+            throw new NullPointerException(String.format(nullExceptionComment, "id"));
         }
         if (friendId == null) {
-            throw new NullPointerException("Параметр friendId не может быть null");
+            throw new NullPointerException(String.format(nullExceptionComment, "friendId"));
         }
         try {
             User user = userService.getUserStorage().getUser(id);
             User friend = userService.getUserStorage().getUser(friendId);
             return userService.removeFriend(user, friend);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(" Проврьте параметры id и friendId - числа");
+            throw new IllegalArgumentException("Проверьте параметры id и friendId - числа");
         }
     }
 

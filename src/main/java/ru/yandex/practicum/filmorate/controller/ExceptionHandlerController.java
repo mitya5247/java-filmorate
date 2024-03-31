@@ -37,4 +37,5 @@ public class ExceptionHandlerController {
     public ErrorResponse getServerException(final HttpServerErrorException e) {
         return new ErrorResponse("Ошибка сервера");
     }
+
 }
