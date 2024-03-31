@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.controller;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -17,22 +19,23 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/films")
+@Component
 public class FilmController {
-    ArrayList<Film> films = new ArrayList<>();
-    //   int id = 1;
 
     final FilmService filmService;
     final UserService userService;
 
+    @Autowired
     public FilmController(FilmService filmService, UserService userService) {
         this.filmService = filmService;
         this.userService = userService;
     }
 
-    //  @GetMapping
-    // public List<Film> getFilms() {
-    //     return filmService.showFilms();
-    // }
+      @GetMapping
+      public List<Film> getFilms() {
+        List<Film> films = new ArrayList<>(filmService.getFilmStorage().getFilmHashMap().values());
+          return films;
+       }
 
     @GetMapping(value = "/{id}")
     public Film getFilm(@PathVariable int id) {
@@ -51,28 +54,18 @@ public class FilmController {
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) throws ValidationException {
         FilmValidator.checkFilm(film);
-        //   film.setId(id++);
-        //   films.add(film);
-        //   return film;
         return filmService.getFilmStorage().createFilm(film);
     }
 
     @PutMapping
     public Film updateFilm(@NotNull @NotBlank @RequestBody Film film) throws ValidationException {
         FilmValidator.checkFilm(film);
-        if (film.getId() == 0) {
-            throw new ValidationException("Задан нулевой id");
+        if (filmService.getFilmStorage().updateFilm(film) != null) {
+            return film;
         } else {
-            for (Film film1 : films) {
-                if (film1.getId() == film.getId()) {
-                    films.remove(film1);
-                    films.add(film);
-                    return film;
-                }
-
-            }
+            throw new NullPointerException("Фильм c id " + film.getId() +  " не найден");
         }
-        throw new ValidationException("Фильм с id " + film.getId() + " не добавлен, так как его нет в списке.");
+
     }
 
     @PutMapping(value = "/{id}/like/{userId}")

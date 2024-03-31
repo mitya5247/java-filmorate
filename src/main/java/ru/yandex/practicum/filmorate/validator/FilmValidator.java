@@ -5,6 +5,8 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class FilmValidator {
@@ -12,9 +14,11 @@ public class FilmValidator {
     private static final LocalDate maxDateRelease = LocalDate.of(1895, 12, 28);
     private static final int descriptionLength = 200;
 
-    @SuppressWarnings("checkstyle:Regexp")
+
     public static boolean checkFilm(Film film) throws ValidationException {
         try {
+            List<Long> list = new ArrayList<>();
+            film.setLikes(list);
             if (film.getName().isBlank()) {
                 throw new ValidationException("Поле name не должно быть пустым");
             }
