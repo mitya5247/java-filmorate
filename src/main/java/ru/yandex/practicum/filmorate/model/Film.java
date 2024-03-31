@@ -25,8 +25,6 @@ public class Film {
     final LocalDate releaseDate;
     @PositiveOrZero
     final int duration;
-   // @PositiveOrZero
-   // int likes = 0;
     List<Long> likes;
 
 }
