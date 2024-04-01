@@ -1,0 +1,52 @@
+package ru.yandex.practicum.filmorate.storage;
+
+import lombok.Getter;
+import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.validator.FilmValidator;
+
+import java.util.HashMap;
+
+@Component
+public class InMemoryFilmStorage implements FilmStorage {
+
+    @Getter
+    HashMap<Long, Film> filmHashMap = new HashMap<>();
+    int idGen = 1;
+
+    @Override
+    public Film createFilm(Film film) throws ValidationException {
+
+        FilmValidator.checkFilm(film);
+        film.setId(idGen++);
+        filmHashMap.put(film.getId(), film);
+        return film;
+    }
+
+    @Override
+    public void deleteFilm(long id) {
+        if (filmHashMap.containsKey(id)) {
+            filmHashMap.remove(id);
+        } else {
+            System.out.println("Фильм с данным id не найден");
+        }
+    }
+
+    @Override
+    public Film updateFilm(Film film) {
+        if (filmHashMap.containsKey(film.getId())) {
+            filmHashMap.put(film.getId(), film);
+            return film;
+        } else {
+            System.out.println("Фильм не найден");
+            return null;
+        }
+    }
+
+    @Override
+    public Film getFilm(long id) {
+        return filmHashMap.getOrDefault(id, null);
+    }
+
+}

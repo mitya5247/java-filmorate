@@ -207,4 +207,17 @@ public class ValidationFilmTests {
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         Assertions.assertFalse(violations.isEmpty());
     }
+
+    @Test
+    public void checkAnnotationValidationWithViolationDate() {
+        Film film = Film.builder()
+                .id(1)
+                .name("The most easrlier film")
+                .description("Great short description!")
+                .duration(10)
+                .releaseDate(LocalDate.of(1694, 12, 23))
+                .build();
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        Assertions.assertFalse(violations.isEmpty());
+    }
 }

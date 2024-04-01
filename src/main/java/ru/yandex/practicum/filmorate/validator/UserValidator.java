@@ -5,12 +5,15 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 @Slf4j
 public class UserValidator {
     public static boolean checkUser(User user) throws ValidationException {
         try {
             makeNameUserNotEmpty(user);
+            makeListNotNull(user);
             if (!validEmail(user.getEmail())) {
                 throw new ValidationException("Введен невалидный email: " + user.getEmail());
             }
@@ -45,6 +48,13 @@ public class UserValidator {
             user.setName(user.getLogin());
         } else {
             return;
+        }
+    }
+
+    private static void makeListNotNull(User user) {
+        if (user.getFriends() == null || user.getFilmIdLiked() == null) {
+            user.setFilmIdLiked(new HashSet<>());
+            user.setFriends(new ArrayList<>());
         }
     }
 }
