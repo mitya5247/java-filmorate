@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import ru.yandex.practicum.filmorate.annotations.NotEarly;
+import ru.yandex.practicum.filmorate.model.filmEnum.Genre;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -26,5 +27,6 @@ public class Film {
     @PositiveOrZero
     final int duration;
     List<Long> likes;
+    Genre genre;
 
 }

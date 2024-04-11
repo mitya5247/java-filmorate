@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import ru.yandex.practicum.filmorate.model.userEnum.FriendshipStatus;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class User {
     final LocalDate birthday;
     Set<Long> filmIdLiked;
     List<Long> friends;
+    FriendshipStatus status = FriendshipStatus.REJECTED;
 
 
 }
