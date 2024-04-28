@@ -20,7 +20,7 @@ public class UserDbService implements UserServiceInterface {
 
     @Override
     public List<User> addFriend(User friend1, User friend2) {
-        return List.of();
+        return userServiceInterface.addFriend(friend1, friend2);
     }
 
     @Override
@@ -35,6 +35,6 @@ public class UserDbService implements UserServiceInterface {
 
     @Override
     public List<Long> getListFriends(User user) {
-        return List.of();
+        return userServiceInterface.getListFriends(user);
     }
 }

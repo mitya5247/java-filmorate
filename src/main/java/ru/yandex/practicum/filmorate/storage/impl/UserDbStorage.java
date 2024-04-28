@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component("UserDbStorage")
 @Primary
 public class UserDbStorage implements UserStorage {
@@ -39,7 +42,7 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User createUser(User user) {
         user.setId(idGen++);
-        String sql = "insert into users (user_id, email, login, name, birthday, status) values(?,?,?,?,?)";
+        String sql = "insert into users (user_id, email, login, name, birthday) values(?,?,?,?,?)";
         jdbcTemplate.update(sql, user.getId(), user.getEmail(), user.getLogin(), user.getName(), user.getBirthday());
         return user;
     }
@@ -52,8 +55,39 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User updateUser(User user) {
-        String sql = "update users where user_id = ?";
-        jdbcTemplate.update(sql, user.getId());
+        String sql = "update users set email = ?, login = ?, name = ?, birthday = ? where user_id = ?";
+        jdbcTemplate.update(sql, user.getId(), user.getEmail(), user.getLogin(), user.getName(), user.getBirthday());
         return user;
+    }
+
+    public List<Long> getListFriends(User user) {
+        List<Long> friendsId = new ArrayList<>();
+        String sql = "select friend_id from user_friends where user_id = ?";
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, user.getId());
+        while (sqlRowSet.next()) {
+            Long id = sqlRowSet.getLong("friend_id");
+            friendsId.add(id);
+        }
+        return friendsId;
+    }
+
+    public List<Long> getListCommonFriends(User user1, User user2) { // доработать
+        List<Long> commonFriendsId = new ArrayList<>();
+        String sql = "select friend_id from user_friends where user_id = ?";
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, user1.getId());
+        while (sqlRowSet.next()) {
+            Long id = sqlRowSet.getLong("friend_id");
+            commonFriendsId.add(id);
+        }
+        return commonFriendsId;
+    }
+
+    @Override
+    public List<User> addFriend(User user1, User user2) { // доработать
+        List<User> users = new ArrayList<>();
+        String sql = "insert into user_friends (user_id, friend_id) values(?,?)";
+        jdbcTemplate.update(sql, user1.getId(), user2.getId());
+        String queryForList = "select friend_id from user_friends where user_id = ?";
+        return users;
     }
 }

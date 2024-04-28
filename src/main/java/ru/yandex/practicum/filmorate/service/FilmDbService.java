@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exceptions.ErrorResponse;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
@@ -23,12 +22,12 @@ public class FilmDbService implements FilmServiceInterface {
 
     @Override
     public boolean addLike(User user, Film film) {
-        return false;
+        return filmStorage.addLike(user, film);
     }
 
     @Override
     public boolean deleteLike(User user, Film film) {
-        return false;
+        return filmStorage.deleteLike(user, film);
     }
 
     @Override

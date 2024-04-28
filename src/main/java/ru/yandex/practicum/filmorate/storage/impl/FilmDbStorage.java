@@ -6,6 +6,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.ArrayList;
@@ -92,7 +93,28 @@ public class FilmDbStorage implements FilmStorage {
                     .build();
             films.add(film);
         }
-
         return films;
     }
+
+    @Override
+    public boolean addLike(User user, Film film) {
+        String sql = "insert into film_liked (films_id, users_id) values (?,?)";
+        int edit = jdbcTemplate.update(sql, film.getId(), user.getId());
+        return edit == 2;
+    }
+
+    @Override
+    public boolean deleteLike(User user, Film film) {
+        String sql = "delete from film_liked where films_id = ? and users_id = ?";
+        int edit = jdbcTemplate.update(sql, film.getId(), user.getId());
+        return edit == 2;
+    }
+
+    @Override
+    public List<Integer> getGenres(int id) { // доработать
+        List<Integer> genresId = new ArrayList<>();
+        String sql = "select genre_id";
+        return null;
+    }
+
 }
