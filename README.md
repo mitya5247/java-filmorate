@@ -56,4 +56,4 @@ WHERE (uf.user_id) = id1 AND
 COUNT (user_id) > 1
 GROUP BY uf.user_id
 
-![прикладываю ER - диаграмму с таблицами БД](https://github.com/mitya5247/java-filmorate/blob/add-friends-likes/pictures/filmorate_diagram.png)
+![прикладываю ER - диаграмму с таблицами БД](https://github.com/mitya5247/java-filmorate/blob/add-database/pictures/filmorate_diagram.png)
