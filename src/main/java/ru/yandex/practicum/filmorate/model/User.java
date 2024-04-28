@@ -3,12 +3,13 @@ package ru.yandex.practicum.filmorate.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import ru.yandex.practicum.filmorate.model.userEnum.FriendshipStatus;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+
+import static ru.yandex.practicum.filmorate.model.Constants.REJECTEDFRIENDSHIP;
 
 @Data
 @Builder
@@ -18,15 +19,14 @@ public class User {
     long id;
     @Email
     @NotBlank
-    final String email;
+    String email;
     @NotBlank
-    final String login;
+    String login;
     String name;
     @PastOrPresent
-    final LocalDate birthday;
+    LocalDate birthday;
     Set<Long> filmIdLiked;
     List<Long> friends;
-    FriendshipStatus status = FriendshipStatus.REJECTED;
 
 
 }

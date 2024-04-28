@@ -3,7 +3,8 @@ package ru.yandex.practicum.filmorate.storage;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.Map;
+import java.util.Collection;
+
 
 public interface FilmStorage {
     public Film createFilm(Film film) throws ValidationException;
@@ -14,5 +15,5 @@ public interface FilmStorage {
 
     public Film getFilm(long id);
 
-    public Map<Long, Film> getFilmHashMap();
+    public Collection<Film> getFilms();
 }

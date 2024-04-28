@@ -14,5 +14,7 @@ public interface UserStorage {
 
     public User updateUser(User user);
 
-    public HashMap<Long, User> getUserHashMap();
+    public default HashMap<Long, User> getUserHashMap() {
+        return null;
+    }
 }

@@ -6,7 +6,9 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
@@ -47,6 +49,11 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film getFilm(long id) {
         return filmHashMap.getOrDefault(id, null);
+    }
+
+    @Override
+    public Collection<Film> getFilms() {
+        return filmHashMap.values();
     }
 
 }

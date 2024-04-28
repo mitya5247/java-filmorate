@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
@@ -15,9 +16,10 @@ import java.util.stream.Collectors;
 @Getter
 public class FilmService implements FilmServiceInterface {
 
+    @Autowired
+    @Qualifier("FilmDbStorage")
     final FilmStorage filmStorage;
 
-    @Autowired
     public FilmService(FilmStorage filmStorage) {
         this.filmStorage = filmStorage;
     }
@@ -49,7 +51,7 @@ public class FilmService implements FilmServiceInterface {
     @Override
     public List<Film> showFilms(int count) {
         List<Film> list = new ArrayList<>();
-        list = filmStorage.getFilmHashMap().values().stream()
+        list = filmStorage.getFilms().stream()
                 .sorted((film, t1) -> t1.getLikes().size() - film.getLikes().size())
                 .limit(count)
                 .collect(Collectors.toList());
