@@ -1,42 +1,43 @@
-/*
+
 package ru.yandex.practicum.filmorate.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.service.FilmServiceInterface;
+import ru.yandex.practicum.filmorate.service.UserServiceInterface;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
-@RequestMapping(value = "/films")
+@RequestMapping("/films")
 @Component
 public class FilmController {
 
-    final FilmService filmService;
-    final UserService userService;
+    @Qualifier("FilmDbService")
+    final FilmServiceInterface filmService;
+    @Qualifier("UserDbService")
+    final UserServiceInterface userService;
 
     @Autowired
-    public FilmController(FilmService filmService, UserService userService) {
+    public FilmController(FilmServiceInterface filmService, UserServiceInterface userService) {
         this.filmService = filmService;
         this.userService = userService;
     }
 
-      @GetMapping
-      public List<Film> getFilms() {
-        List<Film> films = new ArrayList<>(filmService.getFilmStorage().getFilmHashMap().values());
-          return films;
-       }
+    @GetMapping
+    public Collection<Film> getFilms() {
+        return filmService.showFilmsAll();
+    }
 
     @GetMapping(value = "/{id}")
     public Film getFilm(@PathVariable int id) {
@@ -44,7 +45,7 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public List<Film> getFilms(@RequestParam(required = false) Integer count) {
+    public Collection<Film> getFilms(@RequestParam(required = false) Integer count) {
         if (count == null) {
             return filmService.showFilms(10);
         } else {
@@ -55,16 +56,16 @@ public class FilmController {
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) throws ValidationException {
         FilmValidator.checkFilm(film);
-        return filmService.getFilmStorage().createFilm(film);
+        return filmService.createFilm(film);
     }
 
     @PutMapping
     public Film updateFilm(@NotNull @NotBlank @RequestBody Film film) throws ValidationException {
         FilmValidator.checkFilm(film);
-        if (filmService.getFilmStorage().updateFilm(film) != null) {
-            return film;
+        if (filmService.updateFilm(film) != null) {
+            return filmService.updateFilm(film);
         } else {
-            throw new NullPointerException("Фильм c id " + film.getId() +  " не найден");
+            throw new NullPointerException("Фильм c id " + film.getId() + " не найден");
         }
 
     }
@@ -72,17 +73,19 @@ public class FilmController {
     @PutMapping(value = "/{id}/like/{userId}")
     public void addLikeFilm(@PathVariable Integer id, @PathVariable Integer userId) {
         Film film = filmService.getFilm(id);
-        User user = userService.getUserStorage().getUser(userId);
+        User user = userService.getUser(userId);
         filmService.addLike(user, film);
     }
 
     @DeleteMapping(value = "/{id}/like/{userId}")
     public void deleteFilm(@PathVariable int id, @PathVariable int userId) {
         Film film = filmService.getFilm(id);
-        User user = userService.getUserStorage().getUser(userId);
+        User user = userService.getUser(userId);
         filmService.deleteLike(user, film);
     }
 
 
+
+
+
 }
-*/

@@ -11,7 +11,7 @@ public class Constants {
     public static final String PGRATING = "PG";
     public static final String PG_13RATING = "PG-13";
     public static final String RRATING = "R";
-    public static final String NC_17RATING = "NC_17";
+    public static final String NC_17RATING = "NC-17";
 
     public static final String COMEDYGENRE = "Комедия";
     public static final String DRAMAGENRE = "Драма";

@@ -14,6 +14,7 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 @Slf4j
 public class ExceptionHandlerController {
 
+
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorResponse getCauseError(final ValidationException e) {

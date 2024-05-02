@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 @Getter
 public class UserService implements UserServiceInterface {
 
@@ -19,6 +17,31 @@ public class UserService implements UserServiceInterface {
     @Autowired
     public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
+    }
+
+    @Override
+    public User getUser(long id) {
+        return userStorage.getUser(id);
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userStorage.getUsers();
+    }
+
+    @Override
+    public User createUser(User user) {
+        return userStorage.createUser(user);
+    }
+
+    @Override
+    public void deleteUser(long id) {
+        userStorage.deleteUser(id);
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return userStorage.updateUser(user);
     }
 
     @Override

@@ -26,5 +26,7 @@ public class Film {
     @PositiveOrZero
     int duration;
     List<Long> likes;
+    Mpa mpa;
+    List<GenreDao> genres;
 
 }

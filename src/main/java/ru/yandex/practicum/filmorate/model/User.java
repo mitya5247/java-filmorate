@@ -5,11 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.*;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
-import static ru.yandex.practicum.filmorate.model.Constants.REJECTEDFRIENDSHIP;
 
 @Data
 @Builder
@@ -24,7 +22,7 @@ public class User {
     String login;
     String name;
     @PastOrPresent
-    LocalDate birthday;
+    Date birthday;
     Set<Long> filmIdLiked;
     List<Long> friends;
 

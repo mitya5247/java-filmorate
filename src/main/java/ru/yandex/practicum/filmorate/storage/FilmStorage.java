@@ -2,10 +2,13 @@ package ru.yandex.practicum.filmorate.storage;
 
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.GenreDao;
+import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface FilmStorage {
@@ -19,6 +22,8 @@ public interface FilmStorage {
 
     public Collection<Film> getFilms();
 
+    public Collection<Film> getFilms(int count);
+
     public default boolean addLike(User user, Film film) {
         return false;
     }
@@ -27,7 +32,19 @@ public interface FilmStorage {
         return false;
     }
 
-    public default List<Integer> getGenres(int id) {
+    public default Mpa getMpa(Optional<Integer> id) {
+        return null;
+    }
+
+    public default List<Mpa> getMpaAll() {
+        return null;
+    }
+
+    public default GenreDao getGenres(Optional<Integer> id) {
+        return null;
+    }
+
+    public default List<GenreDao> getGenresAll() {
         return null;
     }
 }
