@@ -2,6 +2,8 @@
 package ru.yandex.practicum.filmorate.controller;
 
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -14,19 +16,21 @@ import ru.yandex.practicum.filmorate.service.UserServiceInterface;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @RestController
 @RequestMapping("/films")
 @Component
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FilmController {
 
+    static final String pathForAddDeleteLike = "/{id}/like/{userId}";
+
     @Qualifier("FilmDbService")
-    final FilmServiceInterface filmService;
+    FilmServiceInterface filmService;
     @Qualifier("UserDbService")
-    final UserServiceInterface userService;
+    UserServiceInterface userService;
 
     @Autowired
     public FilmController(FilmServiceInterface filmService, UserServiceInterface userService) {
@@ -60,7 +64,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@NotNull @NotBlank @RequestBody Film film) throws ValidationException {
+    public Film updateFilm(@NotNull @RequestBody Film film) throws ValidationException {
         FilmValidator.checkFilm(film);
         if (filmService.updateFilm(film) != null) {
             return filmService.updateFilm(film);
@@ -70,15 +74,15 @@ public class FilmController {
 
     }
 
-    @PutMapping(value = "/{id}/like/{userId}")
+    @PutMapping(value = pathForAddDeleteLike)
     public void addLikeFilm(@PathVariable Integer id, @PathVariable Integer userId) {
         Film film = filmService.getFilm(id);
         User user = userService.getUser(userId);
         filmService.addLike(user, film);
     }
 
-    @DeleteMapping(value = "/{id}/like/{userId}")
-    public void deleteFilm(@PathVariable int id, @PathVariable int userId) {
+    @DeleteMapping(value = pathForAddDeleteLike)
+    public void deleteLikeFilm(@PathVariable int id, @PathVariable int userId) {
         Film film = filmService.getFilm(id);
         User user = userService.getUser(userId);
         filmService.deleteLike(user, film);

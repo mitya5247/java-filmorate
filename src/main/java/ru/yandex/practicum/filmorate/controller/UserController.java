@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.controller;
 
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +18,16 @@ import java.util.*;
 @RestController
 @RequestMapping(value = "/users")
 @Getter
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
 
+    static final String pathForAddAndDeleteFriend = "/{id}/friends/{friendId}";
     @Qualifier("UserDbService")
-    final UserServiceInterface userService;
+    UserServiceInterface userService;
     @Qualifier("FilmDbService")
-    final FilmService filmService;
+    FilmService filmService;
 
-    String nullExceptionComment = "Параметр %s не может быть null";
+    static String nullExceptionComment = "Параметр %s не может быть null";
 
     @Autowired
     public UserController(UserServiceInterface userService, FilmService filmService) {
@@ -92,7 +96,7 @@ public class UserController {
         }
     }
 
-    @PutMapping(value = "/{id}/friends/{friendId}")
+    @PutMapping(value = pathForAddAndDeleteFriend)
     public List<User> addFriend(@PathVariable Long id, @PathVariable Long friendId) {
         if (id == null) {
             throw new NullPointerException(String.format(nullExceptionComment, "id"));
@@ -111,7 +115,7 @@ public class UserController {
     }
 
 
-    @DeleteMapping(value = "/{id}/friends/{friendId}")
+    @DeleteMapping(value = pathForAddAndDeleteFriend)
     public boolean deleteFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
         if (id == null) {
             throw new NullPointerException(String.format(nullExceptionComment, "id"));

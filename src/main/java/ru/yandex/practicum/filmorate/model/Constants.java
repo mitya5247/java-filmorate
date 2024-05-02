@@ -1,23 +1,27 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
+@FieldDefaults(level = AccessLevel.PUBLIC, makeFinal = true)
 public class Constants {
 
-    public static final String ACCEPTEDFRIENDSHIP = "ACCEPTED";
-    public static final String REJECTEDFRIENDSHIP = "REJECTED";
+    static String ACCEPTEDFRIENDSHIP = "ACCEPTED";
+    static String REJECTEDFRIENDSHIP = "REJECTED";
 
 
-    public static final String GRATING = "G";
-    public static final String PGRATING = "PG";
-    public static final String PG_13RATING = "PG-13";
-    public static final String RRATING = "R";
-    public static final String NC_17RATING = "NC-17";
+    static String GRATING = "G";
+    static String PGRATING = "PG";
+    static String PG_13RATING = "PG-13";
+    static String RRATING = "R";
+    static String NC_17RATING = "NC-17";
 
-    public static final String COMEDYGENRE = "Комедия";
-    public static final String DRAMAGENRE = "Драма";
-    public static final String CARTOONGENRE = "Мультфильм";
-    public static final String TRILLERGENRE = "Триллер";
-    public static final String DOCUMENTALGENRE = "Документальный";
-    public static final String MILITANTGENRE = "Боевик";
+    static String COMEDYGENRE = "Комедия";
+    static String DRAMAGENRE = "Драма";
+    static String CARTOONGENRE = "Мультфильм";
+    static String TRILLERGENRE = "Триллер";
+    static String DOCUMENTALGENRE = "Документальный";
+    static String MILITANTGENRE = "Боевик";
+
 
 }
