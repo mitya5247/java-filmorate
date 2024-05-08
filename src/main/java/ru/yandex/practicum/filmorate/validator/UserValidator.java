@@ -4,8 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 
 @Slf4j
@@ -39,8 +40,8 @@ public class UserValidator {
         return !login.isBlank() && !login.contains(" ");
     }
 
-    private static boolean validDateBirthday(LocalDate date) {
-        return date.isBefore(LocalDate.now());
+    private static boolean validDateBirthday(Date date) {
+        return date.before(Date.from(Instant.now()));
     }
 
     private static void makeNameUserNotEmpty(User user) {
